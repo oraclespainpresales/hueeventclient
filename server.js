@@ -4,11 +4,15 @@
 var restify = require('restify')
   , queue = require('block-queue')
   , log = require('npmlog-ts')
+  , express = require('express')
+  , http = require('http')
+  , bodyParser = require('body-parser')
   , commandLineArgs = require('command-line-args')
   , getUsage = require('command-line-usage')
 ;
 
 log.timestamp = true;
+var status = "DISCONNECTED";
 
 // Initialize input arguments
 const optionDefinitions = [
@@ -76,6 +80,25 @@ if (!options.eventserver || !options.demozone) {
 log.level = (options.verbose) ? 'verbose' : 'info';
 
 const demozone = options.demozone.toLowerCase();
+
+// Instantiate classes & servers
+var app    = express()
+  , router = express.Router()
+  , server = http.createServer(app)
+;
+
+// REST engine initial setup
+const PORT    = 3379;
+const STATUS  = '/status';
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use("/", router);
+
+router.get(STATUS, function(req, res) {
+  log.verbose("", "Status request");
+  res.status(200).send(status);
+});
+// REST stuff - END
 
 // Initializing REST client BEGIN
 var client = restify.createJsonClient({
@@ -217,34 +240,43 @@ socket.on(demozone + "," + "drone", function(msg, callback) {
 
 socket.on('connect_error', function(err) {
   log.verbose("","[EVENT] connect_error: " + JSON.stringify(err));
+  status = "DISCONNECTED";
 });
 
 socket.on('connect_timeout', function() {
   log.verbose("","[EVENT] Econnect_timeout");
+  status = "DISCONNECTED";
 });
 socket.on('reconnect', function() {
   log.verbose("","[EVENT] reconnect");
+  status = "DISCONNECTED";
 });
 socket.on('reconnect_attempt', function(attempt) {
   log.verbose("","[EVENT] reconnect_attempt: " + attempt);
+  status = "DISCONNECTED";
 });
 socket.on('reconnecting', function() {
   log.verbose("","[EVENT] reconnecting");
+  status = "DISCONNECTED";
 });
 socket.on('reconnect_error', function(err) {
   log.verbose("","[EVENT] reconnect_error: " + JSON.stringify(err));
+  status = "DISCONNECTED";
 });
 socket.on('reconnect_failed', function(err) {
   log.verbose("","[EVENT] reconnect_failed: " + JSON.stringify(err));
+  status = "DISCONNECTED";
 });
 socket.on('ping', function() {
   log.verbose("","[EVENT] Heartbeat");
 });
 socket.on('connect', function() {
   log.verbose("","[EVENT] connect");
+  status = "CONNECTED";
 });
 socket.on('disconnect', function() {
   log.verbose("","[EVENT] disconnect");
+  status = "DISCONNECTED";
 });
 
 // ************************************************************************
@@ -264,3 +296,7 @@ process.on('SIGINT', function() {
   process.exit(2);
 });
 // Main handlers registration - END
+
+server.listen(PORT, function() {
+  log.info("", "REST server running on http://localhost:" + PORT + URI);
+});

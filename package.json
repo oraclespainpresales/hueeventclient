@@ -19,8 +19,10 @@
   "homepage": "https://github.com/oraclespainpresales/hueeventclient#readme",
   "dependencies": {
     "block-queue": "0.0.2",
+    "body-parser": "^1.16.1",
     "command-line-args": "^4.0.1",
     "command-line-usage": "^4.0.0",
+    "express": "^4.14.1",
     "npmlog-ts": "0.0.1",
     "restify": "^4.3.0",
     "socket.io-client": "^1.7.2"
