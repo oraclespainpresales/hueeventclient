@@ -99,7 +99,7 @@ log.info("", "Initializing QUEUE system");
 q = queue(queueConcurrency, (task, done) => {
   // task = { action: "ON|OFF|BLINK|BLINKONCE", light: "Ground Shock|Skull|Guardian|Thermo|ALL", color: "GREEN|RED|BLUE" }
   var URI = "/hue/" + task.light + "/" + task.action + ((task.color) ? "/" + task.color : "");
-  client.put(URI, function(err, req, res, obj) {
+  client.put(encodeURI(URI), function(err, req, res, obj) {
     if (err) {
       log.error("",err.message);
     }
