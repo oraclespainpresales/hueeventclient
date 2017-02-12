@@ -89,10 +89,11 @@ var app    = express()
 
 // REST engine initial setup
 const PORT    = 3379;
+const URI     = "/";
 const STATUS  = '/status';
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use("/", router);
+app.use(URI, router);
 
 router.get(STATUS, function(req, res) {
   log.verbose("", "Status request");
