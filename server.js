@@ -97,7 +97,7 @@ var queueConcurrency = 1;
 // QUEUE definition and handling BEGIN
 log.info("", "Initializing QUEUE system");
 q = queue(queueConcurrency, (task, done) => {
-  // task = { action: "ON|OFF|BLINK|BLINKONCE", light: "Ground Shock|Skull|Guardian|Thermo|ALL", color: "GREEN|RED|BLUE" }
+  // task = { action: "ON|OFF|BLINK|BLINKONCE", light: "Ground Shock|Skull|Guardian|Thermo|ALL", color: "GREEN|RED|BLUE|YELLOW" }
   var URI = "/hue/" + task.light + "/" + task.action + ((task.color) ? "/" + task.color : "");
   client.put(encodeURI(URI), function(err, req, res, obj) {
     if (err) {
@@ -113,7 +113,7 @@ var socket = require('socket.io-client')('http://' + options.eventserver);
 
 // Events to subscribe:
 // "speed": get car name and set its light to ON - GREEN
-// "highspeed": get car name and set its light to BLINK - GREEN
+// "highspeed": get car name and set its light to BLINK - YELLOW
 // "regularspeed": get car name and set its light to ON - GREEN
 // "lap: get car name and set its light to BLINKONCE - GREEN
 // "offtrack": get car name and set its light to ON - RED
@@ -144,7 +144,7 @@ socket.on(demozone + "," + "highspeed", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
-      q.push({ action: "BLINK", light: m.payload.data.data_carname, color: "GREEN" });
+      q.push({ action: "BLINK", light: m.payload.data.data_carname, color: "YELLOW" });
     }
   });
 });
