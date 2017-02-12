@@ -126,6 +126,7 @@ var socket = require('socket.io-client')('http://' + options.eventserver);
 //    "DOWNLOADING"; set drone light to GREEN
 //    "LANDED"; set drone light to OFF
 
+/**
 // SPEED
 log.info("", "Subscribing to namespace: " + demozone + "," + "speed");
 socket.on(demozone + "," + "speed", function(msg, callback) {
@@ -136,6 +137,7 @@ socket.on(demozone + "," + "speed", function(msg, callback) {
     }
   });
 });
+**/
 // HIGHSPEED
 log.info("", "Subscribing to namespace: " + demozone + "," + "highspeed");
 socket.on(demozone + "," + "highspeed", function(msg, callback) {
@@ -172,7 +174,7 @@ socket.on(demozone + "," + "offtrack", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
-      q.push({ action: "BLINKONCE", light: m.payload.data.data_carname, color: "RED" });
+      q.push({ action: "BLINK", light: m.payload.data.data_carname, color: "RED" });
     }
   });
 });
