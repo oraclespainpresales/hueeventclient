@@ -221,17 +221,17 @@ socket.on(demozone + "," + "drone", function(msg, callback) {
   msg.forEach(function(m) {
     if (m.payload.data.status) {
       if ( m.payload.data.status === "GOING") {
-        q.push({ action: "BLINK", light: "drone", color: "GREEN" });
+        q.push({ action: "BLINK", light: "Drone", color: "GREEN" });
       } else if ( m.payload.data.status === "TAKING PICTURE") {
         q.push({ action: "BLINKONCE", light: "drone", color: "BLUE" });
       } else if ( m.payload.data.status === "RETURNING") {
-        q.push({ action: "BLINK", light: "drone", color: "GREEN" });
+        q.push({ action: "BLINK", light: "Drone", color: "GREEN" });
       } else if ( m.payload.data.status === "LANDING") {
-        q.push({ action: "BLINK", light: "drone", color: "GREEN" });
+        q.push({ action: "BLINK", light: "Drone", color: "GREEN" });
       } else if ( m.payload.data.status === "DOWNLOADING") {
-        q.push({ action: "ON", light: "drone", color: "GREEN" });
+        q.push({ action: "ON", light: "Drone", color: "GREEN" });
       } else if ( m.payload.data.status === "LANDED") {
-        q.push({ action: "OFF", light: "drone" });
+        q.push({ action: "OFF", light: "Drone" });
       } else {
         // Should never happen
       }
