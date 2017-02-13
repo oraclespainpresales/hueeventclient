@@ -103,7 +103,7 @@ router.get(STATUS, function(req, res) {
 
 // Initializing REST client BEGIN
 var client = restify.createJsonClient({
-  url: 'http://192.168.1.101:3378',
+  url: 'http://localhost:3378',
   connectTimeout: 1000,
   requestTimeout: 1000,
   retry: false,
