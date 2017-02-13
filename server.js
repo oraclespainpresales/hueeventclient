@@ -209,7 +209,7 @@ socket.on(demozone + "," + "race", function(msg, callback) {
   msg.forEach(function(m) {
     if (m.payload.data.raceStatus) {
       if ( m.payload.data.raceStatus === "STOPPED") {
-        q.push({ action: "OFF", light: ALL });
+        q.push({ action: "OFF", light: "ALL" });
       }
     }
   });
@@ -223,7 +223,7 @@ socket.on(demozone + "," + "drone", function(msg, callback) {
       if ( m.payload.data.status === "GOING") {
         q.push({ action: "BLINK", light: "Drone", color: "GREEN" });
       } else if ( m.payload.data.status === "TAKING PICTURE") {
-        q.push({ action: "BLINKONCE", light: "drone", color: "BLUE" });
+        q.push({ action: "BLINKONCE", light: "Drone", color: "BLUE" });
       } else if ( m.payload.data.status === "RETURNING") {
         q.push({ action: "BLINK", light: "Drone", color: "GREEN" });
       } else if ( m.payload.data.status === "LANDING") {
