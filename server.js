@@ -152,8 +152,8 @@ var socket = require('socket.io-client')('http://' + options.eventserver);
 
 /**
 // SPEED
-log.info("", "Subscribing to namespace: " + demozone + "," + "speed");
-socket.on(demozone + "," + "speed", function(msg, callback) {
+log.info("", "Subscribing to namespace: " + "speed");
+socket.on("speed", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
@@ -163,8 +163,8 @@ socket.on(demozone + "," + "speed", function(msg, callback) {
 });
 **/
 // HIGHSPEED
-log.info("", "Subscribing to namespace: " + demozone + "," + "highspeed");
-socket.on(demozone + "," + "highspeed", function(msg, callback) {
+log.info("", "Subscribing to namespace: " + "highspeed");
+socket.on("highspeed", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
@@ -173,8 +173,8 @@ socket.on(demozone + "," + "highspeed", function(msg, callback) {
   });
 });
 // REGULARSPEED
-log.info("", "Subscribing to namespace: " + demozone + "," + "regularspeed");
-socket.on(demozone + "," + "regularspeed", function(msg, callback) {
+log.info("", "Subscribing to namespace: " + "regularspeed");
+socket.on("regularspeed", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
@@ -183,8 +183,8 @@ socket.on(demozone + "," + "regularspeed", function(msg, callback) {
   });
 });
 // LAP
-log.info("", "Subscribing to namespace: " + demozone + "," + "lap");
-socket.on(demozone + "," + "lap", function(msg, callback) {
+log.info("", "Subscribing to namespace: " + "lap");
+socket.on("lap", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
@@ -193,8 +193,8 @@ socket.on(demozone + "," + "lap", function(msg, callback) {
   });
 });
 // OFFTRACK
-log.info("", "Subscribing to namespace: " + demozone + "," + "offtrack");
-socket.on(demozone + "," + "offtrack", function(msg, callback) {
+log.info("", "Subscribing to namespace: " + "offtrack");
+socket.on("offtrack", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
@@ -203,8 +203,8 @@ socket.on(demozone + "," + "offtrack", function(msg, callback) {
   });
 });
 // RACE
-log.info("", "Subscribing to namespace: " + demozone + "," + "race");
-socket.on(demozone + "," + "race", function(msg, callback) {
+log.info("", "Subscribing to namespace: " + "race");
+socket.on("race", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.raceStatus) {
@@ -215,8 +215,8 @@ socket.on(demozone + "," + "race", function(msg, callback) {
   });
 });
 // DRONE
-log.info("", "Subscribing to namespace: " + demozone + "," + "drone");
-socket.on(demozone + "," + "drone", function(msg, callback) {
+log.info("", "Subscribing to namespace: " + "drone");
+socket.on("drone", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.status) {
