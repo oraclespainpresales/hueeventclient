@@ -182,6 +182,7 @@ socket.on("regularspeed", function(msg, callback) {
     }
   });
 });
+/**
 // LAP
 log.info("", "Subscribing to namespace: " + "lap");
 socket.on("lap", function(msg, callback) {
@@ -192,6 +193,7 @@ socket.on("lap", function(msg, callback) {
     }
   });
 });
+**/
 // OFFTRACK
 log.info("", "Subscribing to namespace: " + "offtrack");
 socket.on("offtrack", function(msg, callback) {
