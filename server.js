@@ -133,6 +133,7 @@ q = queue(queueConcurrency, (task, done) => {
 log.info("", "QUEUE system initialized successfully");
 // QUEUE definition and handling END
 
+log.info("", "Connecting WebSocket channel to: " + options.eventserver);
 var socket = require('socket.io-client')('http://' + options.eventserver);
 
 // Events to subscribe:
