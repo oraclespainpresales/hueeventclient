@@ -9,6 +9,7 @@ var restify = require('restify')
   , bodyParser = require('body-parser')
   , commandLineArgs = require('command-line-args')
   , getUsage = require('command-line-usage')
+  , _ = require('lodash')
 ;
 
 log.timestamp = true;
@@ -80,6 +81,14 @@ if (!options.eventserver || !options.demozone) {
 log.level = (options.verbose) ? 'verbose' : 'info';
 
 const demozone = options.demozone.toLowerCase();
+
+var pauseLights = [
+  { car: "Ground Shock", timer: undefined },
+  { car: "Thermo", timer: undefined },
+  { car: "Skull", timer: undefined },
+  { car: "Guardian", timer: undefined }
+];
+const pauseTimeWindow = 11000;
 
 // Instantiate classes & servers
 var app    = express()
@@ -169,7 +178,10 @@ socket.on("highspeed", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
-      q.push({ action: "BLINK", light: m.payload.data.data_carname, color: "YELLOW" });
+      var c = _.find(pauseLights, { 'car': m.payload.data.data_carname });
+      if ( !c.timer) {
+        q.push({ action: "BLINK", light: m.payload.data.data_carname, color: "YELLOW" });
+      }
     }
   });
 });
@@ -179,7 +191,10 @@ socket.on("regularspeed", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
-      q.push({ action: "ON", light: m.payload.data.data_carname, color: "GREEN" });
+      var c = _.find(pauseLights, { 'car': m.payload.data.data_carname });
+      if ( !c.timer) {
+        q.push({ action: "ON", light: m.payload.data.data_carname, color: "GREEN" });
+      }
     }
   });
 });
@@ -201,6 +216,14 @@ socket.on("offtrack", function(msg, callback) {
   log.verbose("", "Message received: " + JSON.stringify(msg));
   msg.forEach(function(m) {
     if (m.payload.data.data_carname) {
+      var c = _.find(pauseLights, { 'car': m.payload.data.data_carname });
+      if (!c.timer) {
+        log.verbose("", "Setting ignore timer for next " + pauseTimeWindow + " milliseconds for car " + c.car);
+        c.timer = setTimeout( (c) => {
+          c.timer = _.noop();
+          log.verbose("", "Timer completed for car " + c.car);
+        }, pauseTimeWindow, c);
+      }
       q.push({ action: "BLINK", light: m.payload.data.data_carname, color: "RED" });
     }
   });
@@ -212,6 +235,16 @@ socket.on("race", function(msg, callback) {
   msg.forEach(function(m) {
     if (m.payload.data.raceStatus) {
       if ( m.payload.data.raceStatus === "STOPPED") {
+        pauseLights.forEach((p) => {
+          if (p.timer) {
+            clearTimeout(p);
+            p.timer = _.noop();
+          }
+          p.timer = setTimeout( (p) => {
+            p.timer = _.noop();
+            log.verbose("", "Timer completed for car " + p.car);
+          }, pauseTimeWindow, p);
+        });
         q.push({ action: "OFF", light: "ALL" });
       }
     }
